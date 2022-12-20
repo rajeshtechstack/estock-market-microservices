@@ -1,0 +1,44 @@
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+spring:
+  application:
+    name: ESTOCK-MARKET-GATEWAY
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          handshake-timeout-millis: 10000
+          close-notify-flush-timeout-millis: 3000
+          close-notify-read-timeout-millis: 0
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods: "*"
+      routes:
+        - id: User-Query-Services
+          uri: lb://User-Query-Services
+          predicates:
+            - Path=/api/v1.0/user/**, /api/v1.0/user/*/**
+
+        - id: Company-Query-Services
+          uri: lb://Company-Query-Services
+          predicates:
+            - Path=/api/v1.0/market/company/**,/api/v1.0/market/company/*/**,/api/v1.0/market/stock/*/**
+
+        - id: User-Authentication-Service
+          uri: lb://User-Authentication-Service
+          predicates:
+            - Path=/api/v1.0/*/**,/api/v1.0/**

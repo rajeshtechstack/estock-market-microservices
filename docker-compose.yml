@@ -1,0 +1,66 @@
+version: "3"
+
+
+services:
+
+  estock-market-service-registry:
+    image: estock-market-service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - test-network
+
+  estock-market-authentication-service:
+    image: estock-market-authentication-service
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://estock-market-service-registry:8761/eureka
+    ports:
+      - "8084:8084"
+    depends_on:
+      - estock-market-service-registry
+    networks:
+      - test-network
+
+  estockmarket-user-service:
+    image: estockmarket-user-service
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://estock-market-service-registry:8761/eureka
+    ports:
+      - "8082:8082"
+    depends_on:
+      - estock-market-authentication-service
+    networks:
+      - test-network
+
+  estock-market-api:
+    image: estock-market-api
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://estock-market-service-registry:8761/eureka
+    ports:
+      - "8085:8085"
+    depends_on:
+      - estockmarket-user-service
+    networks:
+      - test-network
+
+
+  estock-market-gateway:
+    image: estock-market-gateway
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://estock-market-service-registry:8761/eureka
+    ports:
+      - "2000:2000"
+    depends_on:
+      - estock-market-service-registry
+      - estock-market-authentication-service
+      - estockmarket-user-service
+      - estock-market-api
+    networks:
+      - test-network
+
+networks:
+  test-network:

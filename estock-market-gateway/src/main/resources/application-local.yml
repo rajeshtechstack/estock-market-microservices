@@ -1,0 +1,59 @@
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+
+spring:
+  application:
+    name: estock-market-gateway
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods: "*"
+      routes:
+        - id: user-api-service
+          uri: lb://estockmarket-user-service
+          predicates:
+            - Path=/api/v1.0/user/**, /api/v1.0/user/*/**,/estock-market-user-api/*/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: user-api-service
+#                fallbackuri: forward:/userApiFallBack
+
+        - id: company-api-service
+          uri: lb://estock-market-api
+          predicates:
+            - Path=/api/v1.0/market/company/**,/api/v1.0/market/company/*/**,/api/v1.0/market/stock/*/**,/estock-market-api/*/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: company-api-service
+#                fallbackuri: forward:/marketApiFallback
+        - id: user-authentication-service
+          uri: lb://estock-market-authentication-service
+          predicates:
+            - Path=/api/v1.0/**,/api/v1.0/*/**,/authentication-api/*/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: user-authentication-service
+#                fallbackuri: forward:/userAuthenticationFallBack
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
