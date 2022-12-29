@@ -107,8 +107,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         logger.info("WebSecurityConfig:: simpleCorsFilter: allowedOrigins: {}", allowedOrigins.length);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
-        config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(allowedOrigins));
+        config.setAllowCredentials(false);
+        config.setAllowedOrigins(Arrays.asList("*"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         source.registerCorsConfiguration("/**", config);

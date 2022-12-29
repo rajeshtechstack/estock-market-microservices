@@ -29,16 +29,19 @@ spring:
             allowedMethods: "*"
       routes:
         - id: User-Query-Services
-          uri: lb://User-Query-Services
+          uri: http://44.211.37.102:8082/
+#          uri: http://localhost:8082/
           predicates:
-            - Path=/api/v1.0/user/**, /api/v1.0/user/*/**
+            - Path=/api/v1.0/user/**, /api/v1.0/user/*/**,/estock-market-user-api/*/**
 
         - id: Company-Query-Services
-          uri: lb://Company-Query-Services
+          uri: http://54.236.42.99:8085/
+#          uri: http://localhost:8085/
           predicates:
-            - Path=/api/v1.0/market/company/**,/api/v1.0/market/company/*/**,/api/v1.0/market/stock/*/**
+            - Path=/api/v1.0/market/company/**,/api/v1.0/market/company/*/**,/api/v1.0/market/stock/*/**,/estock-market-api/*/**
 
         - id: User-Authentication-Service
-          uri: lb://User-Authentication-Service
+          uri: http://34.205.2.168:8084/
+#          uri: http://localhost:8084/
           predicates:
-            - Path=/api/v1.0/*/**,/api/v1.0/**
+            - Path=/api/v1.0/**,/api/v1.0/*/**,/authentication-api/*/**,/oauth/**

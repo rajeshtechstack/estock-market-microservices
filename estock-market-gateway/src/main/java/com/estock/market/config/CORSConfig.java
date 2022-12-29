@@ -23,9 +23,9 @@ public class CORSConfig {
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.OPTIONS);
         config.addAllowedMethod(HttpMethod.POST);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedOrigins(Arrays.asList("*"));
         config.setMaxAge(1800L);
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
         config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
         source.registerCorsConfiguration("/**", config);
         return new CorsWebFilter(source);

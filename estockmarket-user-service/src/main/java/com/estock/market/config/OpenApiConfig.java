@@ -20,18 +20,16 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .components(new Components()
                         .addSecuritySchemes("spring_oauth", new SecurityScheme()
-                                .type(SecurityScheme.Type.OAUTH2)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
                                 .description("Oauth2 flow")
-                                .flows(new OAuthFlows()
-                                        .clientCredentials(new OAuthFlow()
-                                                .tokenUrl(tokenUrl)
-                                                .scopes(new Scopes()
-                                                        .addString("read", "for read operations")
-                                                        .addString("write", "for write operations")
-                                                ))))
+                                .name(securitySchemeName)
+                                )
                 )
                 .security(Arrays.asList(
                         new SecurityRequirement().addList("spring_oauth")))

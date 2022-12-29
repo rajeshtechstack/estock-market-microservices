@@ -24,12 +24,12 @@ security:
 estock:
   market:
     tokenURL: http://localhost:8084/oauth/token
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
 springdoc:
   swagger-ui:
     disable-swagger-default-url: true

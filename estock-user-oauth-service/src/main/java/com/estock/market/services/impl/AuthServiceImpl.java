@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
         requestBody.add("username", userRequest.getUsername());
         requestBody.add("password", userRequest.getPassword());
         HttpEntity<MultiValueMap<String, String>> formEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<GenericTokenResponse> response = restTemplate.exchange(serviceUrl,
+        ResponseEntity<GenericTokenResponse> response = restTemplate.exchange(hostURL,
                 HttpMethod.POST, formEntity, GenericTokenResponse.class);
         GenericResponse genericResponse = new GenericResponse<>("Authenticated successfully",
                 response.getBody());
